@@ -26,7 +26,6 @@ export default function Home({ stars }: { stars: number }) {
     if (event.target.files && event.target.files[0]) {
       setSelectedFile(event.target.files[0]);
       setFileName(event.target.files[0].name);
-      console.log(selectedFile);
     }
   }
   
@@ -36,13 +35,12 @@ export default function Home({ stars }: { stars: number }) {
       formData.append('myFile', selectedFile, selectedFile.name);
       // TODO: make post request to endpoint
       // fetch('/your-endpoint', { method: 'POST', body: formData })
-      console.log(formData.values);
     }
   }
 
   return (
-    <Layout>
-      <div className="flex-1 container mx-auto bg-neutral-200">
+    <Layout className="container bg-neutral-200 mx-auto">
+      <div className="flex-1">
         <h1 className="bg-blue-200 m-8 font-bold py-10 text-4xl text-center">MP3 Looper</h1>
         <div className="flex flex-col items-center justify-center">
           <input type="file" accept=".mp3" onChange={fileSelectedHandler} />

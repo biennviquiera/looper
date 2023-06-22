@@ -11,7 +11,7 @@ export default function RootLayout({
     <html>
       <head>
       </head>
-      <body>
+      <body className={className}>
         {children}
       </body>
     </html>
