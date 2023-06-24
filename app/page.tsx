@@ -30,16 +30,33 @@ export default function Home({ stars }: { stars: number }) {
   }
   
   const fileUploadHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
     const formData = new FormData();
     if (selectedFile) {
       formData.append('myFile', selectedFile, selectedFile.name);
-      // TODO: make post request to endpoint
-      // fetch('/your-endpoint', { method: 'POST', body: formData })
+      console.log(...formData);
+
+      const res = fetch('http://localhost:3001/api/loop', {
+        method: 'POST',
+        body: formData,
+      });
     }
   }
 
+  // async function getLoopedFile(form: FormData) {
+   
+  //   // Recommendation: handle errors
+  //   if (!res.ok) {
+  //     // This will activate the closest `error.js` Error Boundary
+  //     throw new Error('Failed to fetch data')
+  //   }
+  //   return res
+  // }
+  
+
   return (
-    <Layout className="container bg-neutral-200 mx-auto">
+    <Layout>
       <div className="flex-1">
         <h1 className="bg-blue-200 m-8 font-bold py-10 text-4xl text-center">MP3 Looper</h1>
         <div className="flex flex-col items-center justify-center">

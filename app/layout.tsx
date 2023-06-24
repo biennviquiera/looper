@@ -8,7 +8,7 @@ export default function RootLayout({
   className?: string
 }) {
   return (
-    <html>
+    <html lang="en" suppressHydrationWarning={true}>
       <head>
       </head>
       <body className={className}>
