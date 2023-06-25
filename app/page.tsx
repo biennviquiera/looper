@@ -21,7 +21,7 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [selectedRange, setSelectedRange] = useState<number[]>([0,0]);
-
+  
   const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setSelectedFile(event.target.files[0]);
@@ -45,29 +45,39 @@ export default function Home() {
     }
   }
 
+  // ref for keeping track of current range
+  const selectedRangeRef = useRef(selectedRange); 
+  useEffect(() => {
+    selectedRangeRef.current = selectedRange;
+  }, [selectedRange]);
+  
   useEffect(() => {
     if (audioElement.current) {
       audioElement.current.ontimeupdate = () => {
         if (audioElement.current) {
           setCurrentTime(audioElement.current.currentTime);
+          if (audioElement.current.currentTime > selectedRangeRef.current[1]) {
+            audioElement.current.currentTime = selectedRangeRef.current[0];
+          }
         }
       };
       audioElement.current.onloadedmetadata = () => {
         if (audioElement.current) {
           setDuration(audioElement.current.duration);
-          setSelectedRange([selectedRange[0], audioElement.current.duration])
+          setSelectedRange([0, audioElement.current.duration]);
         }
       };
     }
   }, [audioFile]);
   
-  const onProgressChange = (value: number | number[]) => {
+  const onSliderChange = (value: number | number[]) => {
     console.log(value);
     if (audioElement.current) {
       if (typeof value === 'number') {
         audioElement.current.currentTime = value;
       } else if (value.length > 0) {
         audioElement.current.currentTime = value[0];
+        console.log('setting range to ' + value[1]);
         setSelectedRange(value);
       }
     }
@@ -86,12 +96,13 @@ export default function Home() {
 
   useEffect(() => {
     const handleSpacebar = (event: KeyboardEvent) => {
-      if (audioElement.current) {
-        audioElement.current.currentTime = selectedRange[0];
-      } else {
-        console.error("audioElement.current is null");
-      } 
       if (event.code === 'Space') {;
+        event.preventDefault();
+        if (audioElement.current) {
+          audioElement.current.currentTime = selectedRange[0];
+        } else {
+          console.error("audioElement.current is null");
+        } 
         togglePlayPause();
       }
     }
@@ -108,15 +119,15 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center">
           <input type="file" accept=".mp3" onChange={fileSelectedHandler} />
           <audio ref={audioElement} src={audioFile} controls />
-
-          {audioElement && 
+          {duration > 0 && 
           <Slider 
             className="m-8"
             range
+            defaultValue={[0, duration]}
             min={0}
-            max={audioElement.current?.duration}
+            max={duration}
             step={0.01}
-            onChange={onProgressChange}
+            onChange={onSliderChange}
             draggableTrack={true}
           />}
           <button className="bg-orange-200 rounded-md px-4 py-2 mt-4" onClick={fileUploadHandler}>Upload</button>
