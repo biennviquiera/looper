@@ -121,7 +121,7 @@ export default function Home() {
           <audio ref={audioElement} src={audioFile} controls />
           {duration > 0 && 
           <Slider 
-            className="m-8"
+            className="py-8 slider-style"
             range
             defaultValue={[0, duration]}
             min={0}
@@ -130,6 +130,7 @@ export default function Home() {
             onChange={onSliderChange}
             draggableTrack={true}
           />}
+          <p>Currently selected: {selectedRangeRef.current[0]}s - {selectedRangeRef.current[1]}s</p>
           <button className="bg-orange-200 rounded-md px-4 py-2 mt-4" onClick={fileUploadHandler}>Upload</button>
         </div>
       </div>
