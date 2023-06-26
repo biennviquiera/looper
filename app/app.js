@@ -3,9 +3,14 @@ import multer from 'multer'
 import cors from 'cors'
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg'
 import ffmpeg from 'fluent-ffmpeg'
+import AWS from 'aws-sdk'
+
 ffmpeg.setFfmpegPath(ffmpegInstaller.path)
 
 const app = express()
+// eslint-disable-next-line no-unused-vars
+const s3 = new AWS.S3()
+
 app.use(cors())
 
 const storage = multer.diskStorage({
