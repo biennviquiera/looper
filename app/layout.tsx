@@ -1,19 +1,14 @@
-import './globals.css'
+import React from 'react'
 
-export default function RootLayout({
-  children,
-  className,
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export default function RootLayout ({
+  children
 }: {
   children: React.ReactNode
-  className?: string
 }) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      <head>
-      </head>
-      <body className={className}>
-        {children}
-      </body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   )
 }
