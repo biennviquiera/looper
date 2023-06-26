@@ -118,7 +118,7 @@ export default function Home() {
         <h1 className="bg-blue-200 m-8 font-bold py-10 text-4xl text-center">MP3 Looper</h1>
         <div className="flex flex-col items-center justify-center">
           <input type="file" accept=".mp3" onChange={fileSelectedHandler} />
-          <audio ref={audioElement} src={audioFile} controls />
+          <audio className="my-4" ref={audioElement} src={audioFile} controls />
           {duration > 0 && 
           <Slider 
             className="py-8 slider-style"
