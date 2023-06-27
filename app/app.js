@@ -56,11 +56,15 @@ const loopFile = (outputPath, loopedPath) => {
 }
 
 app.post('/api/loop', upload.single('myFile'), (req, res) => {
-  console.log(req.body) // form fields
-  console.log(req.file) // form files
-  const startTime = '00:24.500'
-  const endTime = '00:30.000'
+  // console.log(req.body) // form fields
+  // console.log(req.file) // form file
+
   const currentFile = req.file
+  const startTime = req.body.startTime
+  const endTime = req.body.endTime
+
+  console.log('Output: ' + startTime + endTime)
+
   const outputPath = 'uploads/trimmed_' + currentFile.filename
   const loopedPath = 'uploads/looped_' + currentFile.filename
 
