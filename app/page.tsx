@@ -36,11 +36,11 @@ export default function Home () {
     if (selectedFile != null) {
       formData.append('myFile', selectedFile, selectedFile.name)
       console.log(...formData)
-    //  // Used for sending to loop
-    //   const res = fetch('http://localhost:3001/api/loop', {
-    //     method: 'POST',
-    //     body: formData,
-    //   });
+      // Used for sending to loop
+      const res = fetch('http://localhost:3001/api/loop', {
+        method: 'POST',
+        body: formData
+      })
     }
   }
 
