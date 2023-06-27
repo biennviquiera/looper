@@ -35,12 +35,14 @@ export default function Home () {
     const formData = new FormData()
     if (selectedFile != null) {
       formData.append('myFile', selectedFile, selectedFile.name)
+      formData.append('startTime', selectedRange[0].toString())
+      formData.append('endTime', selectedRange[1].toString())
       console.log(...formData)
-    //  // Used for sending to loop
-    //   const res = fetch('http://localhost:3001/api/loop', {
-    //     method: 'POST',
-    //     body: formData,
-    //   });
+      // Used for sending to loop
+      const res = fetch('http://localhost:3001/api/loop', {
+        method: 'POST',
+        body: formData
+      })
     }
   }
 
