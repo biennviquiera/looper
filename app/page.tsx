@@ -23,6 +23,7 @@ export default function Home () {
 
   const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if ((event.target.files?.[0]) != null) {
+      event.preventDefault()
       setSelectedFile(event.target.files[0])
       setFileName(event.target.files[0].name)
       setAudioFile(URL.createObjectURL(event.target.files[0]))
@@ -31,7 +32,6 @@ export default function Home () {
 
   const fileUploadHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-
     const formData = new FormData()
     if (selectedFile != null) {
       formData.append('myFile', selectedFile, selectedFile.name)
