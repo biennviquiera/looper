@@ -7,6 +7,7 @@ import 'rc-slider/assets/index.css'
 import Layout from './layout'
 import React, { useEffect, useState, useRef } from 'react'
 import './globals.css'
+import Player from './components/WaveSurferPlayer'
 
 export default function Home () {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
@@ -142,6 +143,10 @@ export default function Home () {
             onChange={onSliderChange}
             draggableTrack={true}
           />}
+          {duration > 0 && audioFile != null &&
+          <Player audioLink={audioFile} title={fileName}></Player>
+          }
+
           <p>Currently selected: {selectedRangeRef.current[0]}s - {selectedRangeRef.current[1]}s</p>
           <input
           type="number"
