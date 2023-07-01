@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use client'
-
+// THIS COPY CONTAINS THE OLD NATIVE PLAYER
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import Layout from './layout'
@@ -144,7 +144,7 @@ export default function Home () {
             draggableTrack={true}
           />}
           {duration > 0 && audioFile != null &&
-          <Player key={audioFile} audioLink={audioFile} title={fileName}></Player>
+          <Player audioLink={audioFile} title={fileName}></Player>
           }
 
           <p>Currently selected: {selectedRangeRef.current[0]}s - {selectedRangeRef.current[1]}s</p>
