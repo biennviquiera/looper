@@ -5,9 +5,10 @@ import RegionsPlugin, { type Region } from 'wavesurfer.js/dist/plugins/regions'
 interface PlayerProps {
   audioLink: string
   title: string
+  onRegionUpdated: (start: number, end: number) => void
 }
 
-const Player: React.FC<PlayerProps> = ({ audioLink, title }) => {
+const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) => {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null)
   const [playing, setPlaying] = useState<boolean>(false)
   const [duration, setDuration] = useState<number>(0)
@@ -69,6 +70,7 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title }) => {
         if (region != null) {
           setLeftHandleTime(region.start)
           setRightHandleTime(region.end)
+          onRegionUpdated(region.start, region.end)
         }
       })
 

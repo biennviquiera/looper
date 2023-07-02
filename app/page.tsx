@@ -12,7 +12,6 @@ import Player from './components/WaveSurferPlayer'
 export default function Home () {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
   const audioElement = useRef<HTMLAudioElement | null>(null)
-
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -29,6 +28,10 @@ export default function Home () {
       setFileName(event.target.files[0].name)
       setAudioFile(URL.createObjectURL(event.target.files[0]))
     }
+  }
+
+  const regionUpdatedHandler = (start: number, end: number) => {
+    setSelectedRange([start, end])
   }
 
   const fileUploadHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -144,10 +147,15 @@ export default function Home () {
             draggableTrack={true}
           />}
           {duration > 0 && audioFile != null &&
-          <Player key={audioFile} audioLink={audioFile} title={fileName}></Player>
+          <Player
+            key={audioFile}
+            audioLink={audioFile}
+            title={fileName}
+            onRegionUpdated={regionUpdatedHandler}
+          />
           }
 
-          <p>Currently selected: {selectedRangeRef.current[0]}s - {selectedRangeRef.current[1]}s</p>
+          <p>Currently selected: {selectedRange[0]}s - {selectedRange[1]}s</p>
           <input
           type="number"
           value={selectedRange[0]}
