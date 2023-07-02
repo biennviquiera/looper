@@ -58,10 +58,6 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
         setActiveRegion(loopedRegion)
       })
 
-      // Updates time
-      _wavesurfer.on('audioprocess', () => {
-        setDuration(_wavesurfer?.getDuration() - _wavesurfer?.getCurrentTime())
-      })
       // Update state when handles are updated
       wsRegions.on('region-updated', (region) => {
         if (region != null) {
