@@ -11,14 +11,10 @@ import Player from './components/WaveSurferPlayer'
 
 export default function Home () {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
-  const audioElement = useRef<HTMLAudioElement | null>(null)
-  const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileName, setFileName] = useState<string>('None')
 
-  const [currentTime, setCurrentTime] = useState<number>(0)
-  const [duration, setDuration] = useState<number>(0)
   const [selectedRange, setSelectedRange] = useState<number[]>([0, 0])
 
   const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,64 +54,12 @@ export default function Home () {
     selectedRangeRef.current = selectedRange
   }, [selectedRange])
 
-  useEffect(() => {
-    if (audioElement.current != null) {
-      audioElement.current.ontimeupdate = () => {
-        if (audioElement.current != null) {
-          setCurrentTime(audioElement.current.currentTime)
-          if (audioElement.current.currentTime > selectedRangeRef.current[1]) {
-            audioElement.current.currentTime = selectedRangeRef.current[0]
-          }
-        }
-      }
-      audioElement.current.onloadedmetadata = () => {
-        if (audioElement.current != null) {
-          setDuration(audioElement.current.duration)
-          setSelectedRange([0, audioElement.current.duration])
-        }
-      }
-    }
-  }, [audioFile])
-
-  const togglePlayPause = () => {
-    if (audioElement.current != null) {
-      if (isPlaying) {
-        audioElement.current.pause()
-      } else {
-        void audioElement.current.play()
-      }
-      setIsPlaying(!isPlaying)
-    }
-  }
-
-  useEffect(() => {
-    const handleSpacebar = (event: KeyboardEvent) => {
-      if (event.code === 'Space') {
-        event.preventDefault()
-        if (audioElement.current != null) {
-          audioElement.current.currentTime = selectedRange[0]
-        } else {
-          console.error('audioElement.current is null')
-        }
-        togglePlayPause()
-      }
-    }
-    window.addEventListener('keydown', handleSpacebar)
-    return () => {
-      window.removeEventListener('keydown', handleSpacebar)
-    }
-  }, [isPlaying])
-
   return (
       <div className="flex-1">
         <h1 className="bg-blue-200 m-8 font-bold py-10 text-4xl text-center">MP3 Looper</h1>
         <div className="flex flex-col items-center justify-center">
           <input type="file" accept=".mp3" onChange={fileSelectedHandler} />
-          {/* NOTE: THESE ARE TEMPORARY CONTROLS FOR BASIC FUNCTIONALITY.
-              TODO: Use https://wavesurfer-js.org/ as audio player
-          */}
-          <audio className="my-4" ref={audioElement} src={audioFile} controls />
-          {duration > 0 && audioFile != null &&
+          {audioFile != null &&
           <Player
             key={audioFile}
             audioLink={audioFile}

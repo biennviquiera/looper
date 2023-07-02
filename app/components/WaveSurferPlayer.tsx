@@ -74,13 +74,6 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
         }
       })
 
-      // // Resets when finished playing
-      // _wavesurfer.on('finish', function () {
-      //   _wavesurfer.stop()
-      //   setPlaying(false)
-      //   setDuration(_wavesurfer?.getDuration())
-      // })
-
       return () => {
         _wavesurfer.unAll()
         _wavesurfer.destroy()
@@ -111,6 +104,25 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
       void wavesurfer.playPause()
     }
   }
+
+  useEffect(() => {
+    const handleSpacebar = (event: KeyboardEvent): void => {
+      if (event.code === 'Space') {
+        event.preventDefault()
+        // Resets to beginning
+        // if (wavesurfer != null && activeRegion != null) {
+        //   wavesurfer.setTime(activeRegion.start)
+        // } else {
+        //   console.error('audioElement.current is null')
+        // }
+        handlePlay()
+      }
+    }
+    window.addEventListener('keydown', handleSpacebar)
+    return () => {
+      window.removeEventListener('keydown', handleSpacebar)
+    }
+  }, [playing])
 
   return (
     <div className="container">
