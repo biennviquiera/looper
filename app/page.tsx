@@ -40,7 +40,9 @@ export default function Home () {
     if (selectedFile != null) {
       formData.append('myFile', selectedFile, selectedFile.name)
       formData.append('startTime', selectedRange[0].toString())
-      formData.append('endTime', selectedRange[1].toString())
+      // offset used for delay in loop
+      const offset = 0.1
+      formData.append('endTime', (selectedRange[1] + offset).toString())
       console.log(...formData)
       // Used for sending to loop
       const res = fetch('http://localhost:3001/api/loop', {

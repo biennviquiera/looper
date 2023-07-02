@@ -47,7 +47,7 @@ const loopFile = (outputPath, loopedPath) => {
     ffmpeg()
       .input(outputPath)
       .inputOptions('-stream_loop -1')
-      .outputOptions('-t 600')
+      .outputOptions('-t 60')
       .output(loopedPath)
       .on('end', resolve)
       .on('error', reject)
