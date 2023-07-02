@@ -77,18 +77,6 @@ export default function Home () {
     }
   }, [audioFile])
 
-  const onSliderChange = (value: number | number[]) => {
-    console.log(value)
-    if (audioElement.current != null) {
-      if (typeof value === 'number') {
-        audioElement.current.currentTime = value
-      } else if (value.length > 0) {
-        audioElement.current.currentTime = value[0]
-        setSelectedRange(value)
-      }
-    }
-  }
-
   const togglePlayPause = () => {
     if (audioElement.current != null) {
       if (isPlaying) {
@@ -118,16 +106,6 @@ export default function Home () {
     }
   }, [isPlaying])
 
-  const handleStartInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedRange([parseFloat(event.target.value), selectedRange[1]])
-    onSliderChange([parseFloat(event.target.value), selectedRange[1]])
-  }
-
-  const handleEndInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedRange([selectedRange[0], parseFloat(event.target.value)])
-    onSliderChange([selectedRange[0], parseFloat(event.target.value)])
-  }
-
   return (
       <div className="flex-1">
         <h1 className="bg-blue-200 m-8 font-bold py-10 text-4xl text-center">MP3 Looper</h1>
@@ -137,17 +115,6 @@ export default function Home () {
               TODO: Use https://wavesurfer-js.org/ as audio player
           */}
           <audio className="my-4" ref={audioElement} src={audioFile} controls />
-          {duration > 0 &&
-          <Slider
-            className="py-8 slider-style"
-            range
-            defaultValue={[0, duration]}
-            min={0}
-            max={duration}
-            step={0.001}
-            onChange={onSliderChange}
-            draggableTrack={true}
-          />}
           {duration > 0 && audioFile != null &&
           <Player
             key={audioFile}
@@ -156,24 +123,6 @@ export default function Home () {
             onRegionUpdated={regionUpdatedHandler}
           />
           }
-
-          <p>Currently selected: {selectedRange[0]}s - {selectedRange[1]}s</p>
-          <input
-          type="number"
-          value={selectedRange[0]}
-          onChange={handleStartInputChange}
-          min="0"
-          max={duration.toString()}
-          step="0.001"
-          />
-          <input
-          type="number"
-          value={selectedRange[1]}
-          onChange={handleEndInputChange}
-          min="0"
-          max={duration.toString()}
-          step="0.001"
-          />
           <button className="bg-orange-200 rounded-md px-4 py-2 mt-4" onClick={fileUploadHandler}>Upload</button>
         </div>
       </div>
