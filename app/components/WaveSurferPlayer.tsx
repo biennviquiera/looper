@@ -42,10 +42,7 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
 
       // Create regions
       const wsRegions = _wavesurfer.registerPlugin(RegionsPlugin.create())
-
-      // Give regions a random color when they are created
-      const random = (min: number, max: number): number => Math.random() * (max - min) + min
-      const randomColor = (): string => `rgba(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)}, 0.5)`
+      const regionColor = 'rgba(255,0,255,0.4)'
 
       // Sets an initial duration when audio has loaded
       _wavesurfer.once('ready', () => {
@@ -56,7 +53,7 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
         const loopedRegion = wsRegions.addRegion({
           start: 0,
           end: _wavesurfer.getDuration(),
-          color: randomColor()
+          color: regionColor
         })
         setActiveRegion(loopedRegion)
       })
