@@ -41,7 +41,7 @@ export default function Home () {
       formData.append('myFile', selectedFile, selectedFile.name)
       formData.append('startTime', selectedRange[0].toString())
       // offset used for delay in loop
-      const offset = 0.1
+      const offset = 0.08
       formData.append('endTime', (selectedRange[1] + offset).toString())
       console.log(...formData)
       // Used for sending to loop
