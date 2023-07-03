@@ -25,15 +25,19 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
   useEffect(() => {
     if (el.current != null) {
       const _wavesurfer = WaveSurfer.create({
-        barWidth: 1,
         barHeight: 1,
+        barWidth: 1,
         cursorWidth: 1,
         container: el.current,
         height: 100,
         progressColor: '#fff',
         waveColor: 'rgba(255,255,255,.38',
         cursorColor: '#fff',
-        normalize: true
+        normalize: true,
+        hideScrollbar: false,
+        fillParent: true,
+        // autoScroll: true,
+        minPxPerSec: 10
       })
       void _wavesurfer.load(audioLink)
       if (_wavesurfer != null) {
@@ -56,6 +60,10 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
           color: regionColor
         })
         setActiveRegion(loopedRegion)
+      })
+
+      _wavesurfer.on('audioprocess', () => {
+        setDuration(_wavesurfer?.getCurrentTime())
       })
 
       // Update state when handles are updated
@@ -120,10 +128,10 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
   return (
     <div className="container">
       <h1 className="text-center text-2xl my-4">{title}</h1>
-      <div className=" rounded-md bg-green-600 p-3">
-        <div className="flex items-center flex-1">
+      <div className="rounded-md bg-green-600 p-3" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+        <div className="ml-4 items-center">
           <PlayPauseButton onClick={handlePlay} playing={playing} />
-          <div className="flex-1 ml-2" ref={el} />
+          <div className="mt-4 ml-2" ref={el} />
         </div>
         <div className="pl-12">
           <span style={{ color: 'rgba(255,255,255,.38' }} className="text-sm">

@@ -9,7 +9,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import './globals.css'
 import Player from './components/WaveSurferPlayer'
 
-export default function Home () {
+export default function Home() {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -55,20 +55,20 @@ export default function Home () {
   }, [selectedRange])
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center pb-8">
-        <h1 className="font-bold p-8 text-4xl text-center bg-blue-200 m-8">MP3 Looper</h1>
-        <input className="flex-1" type="file" accept=".mp3" onChange={fileSelectedHandler} />
-        {audioFile != null &&
+    <div className="flex flex-col items-center justify-center pb-8 overflow-x-auto">
+      <h1 className="font-bold p-8 text-4xl text-center bg-blue-200 m-8">MP3 Looper</h1>
+      <input className="flex-1" type="file" accept=".mp3" onChange={fileSelectedHandler} />
+      {audioFile != null &&
+        <div className="w-full" style={{ whiteSpace: 'nowrap' }}>
           <Player
             key={audioFile}
             audioLink={audioFile}
             title={fileName}
             onRegionUpdated={regionUpdatedHandler}
           />
-        }
-        <button className="bg-orange-200 rounded-md px-4 py-2 mt-4" onClick={fileUploadHandler}>Upload</button>
-      </div>
-    </>
+        </div>
+      }
+      <button className="bg-orange-200 rounded-md px-4 py-2 mt-4" onClick={fileUploadHandler}>Upload</button>
+    </div>
   )
 }
