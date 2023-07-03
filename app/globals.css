@@ -3,5 +3,12 @@
 @tailwind utilities;
 
 .slider-style {
-    width: 10%
+    width: 20%
+}
+
+.center-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

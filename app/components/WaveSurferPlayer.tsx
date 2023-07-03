@@ -19,6 +19,8 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
 
   const [activeRegion, setActiveRegion] = useState<Region | null>(null)
   const [selectedZoom, setSelectedZoom] = useState<number>(1)
+  const [selectedHeight, setSelectedHeight] = useState<number>(100)
+  const [selectedBarHeight, setSelectedBarHeight] = useState<number>(1)
 
   const el = useRef<HTMLDivElement | null>(null)
 
@@ -28,11 +30,11 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
   useEffect(() => {
     if (el.current != null) {
       const _wavesurfer = WaveSurfer.create({
-        barHeight: 1,
+        barHeight: selectedBarHeight,
         barWidth: 1,
         cursorWidth: 1,
         container: el.current,
-        height: 100,
+        height: selectedHeight,
         progressColor: '#fff',
         waveColor: 'rgba(255,255,255,.38',
         cursorColor: '#fff',
@@ -98,11 +100,14 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
     }
   }, [wavesurfer, activeRegion])
 
+  // Handles changes to controls
   useEffect(() => {
     if (wavesurfer != null && wavesurferReady) {
       wavesurfer.zoom(selectedZoom)
+      wavesurfer.options.height = selectedHeight
+      wavesurfer.options.barHeight = selectedBarHeight
     }
-  }, [selectedZoom, wavesurfer])
+  }, [selectedZoom, selectedHeight, selectedBarHeight, wavesurfer])
 
   useEffect(() => {
     console.log(leftHandleTime, rightHandleTime)
@@ -119,6 +124,16 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
     if (typeof value === 'number') {
       console.log(value)
       setSelectedZoom(value)
+    }
+  }
+  const handleHeightSlider = (value: number | number[]): void => {
+    if (typeof value === 'number') {
+      setSelectedHeight(value)
+    }
+  }
+  const handleBarHeightSlider = (value: number | number[]): void => {
+    if (typeof value === 'number') {
+      setSelectedBarHeight(value)
     }
   }
 
@@ -144,6 +159,18 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
   return (
     <div className="container">
       <h1 className="text-center text-2xl my-4">{title}</h1>
+      <div className="center-screen">
+        Height
+        <Slider
+          className="items-left slider-style mb-8"
+          defaultValue={selectedHeight}
+          min={0}
+          max={500}
+          step={1}
+          onChange={handleHeightSlider}
+          draggableTrack={true}
+        />
+      </div>
       <div className="rounded-md bg-green-600 p-3" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
         <div className="ml-4 items-center">
           <PlayPauseButton onClick={handlePlay} playing={playing} />
@@ -154,14 +181,26 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
             {formatTime(duration)}
           </span>
         </div>
+      </div>
+      <div className="center-screen">
         Zoom
         <Slider
           className="items-left slider-style"
-          defaultValue={1}
+          defaultValue={selectedZoom}
           min={0}
-          max={100}
-          step={0.001}
+          max={500}
+          step={0.1}
           onChange={handleZoomSlider}
+          draggableTrack={true}
+        />
+        Bar Height
+        <Slider
+          className="items-left slider-style"
+          defaultValue={selectedBarHeight}
+          min={0}
+          max={5}
+          step={0.1}
+          onChange={handleBarHeightSlider}
           draggableTrack={true}
         />
       </div>
