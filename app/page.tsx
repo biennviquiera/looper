@@ -2,14 +2,13 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 'use client'
 
-import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import Layout from './layout'
 import React, { useEffect, useState, useRef } from 'react'
 import './globals.css'
 import Player from './components/WaveSurferPlayer'
 
-export default function Home() {
+export default function Home () {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
