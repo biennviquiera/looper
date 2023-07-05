@@ -21,6 +21,7 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
   const [selectedZoom, setSelectedZoom] = useState<number>(1)
   const [selectedHeight, setSelectedHeight] = useState<number>(100)
   const [selectedBarHeight, setSelectedBarHeight] = useState<number>(1)
+  const [volume, setVolume] = useState<number>(1)
 
   const el = useRef<HTMLDivElement | null>(null)
 
@@ -136,6 +137,12 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
       setSelectedBarHeight(value)
     }
   }
+  const handleVolumeSlider = (value: number | number[]): void => {
+    if (typeof value === 'number' && wavesurfer != null) {
+      setVolume(value)
+      wavesurfer.setVolume(volume)
+    }
+  }
 
   useEffect(() => {
     const handleSpacebar = (event: KeyboardEvent): void => {
@@ -191,7 +198,6 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
           max={500}
           step={0.1}
           onChange={handleZoomSlider}
-          draggableTrack={true}
         />
         Bar Height
         <Slider
@@ -201,7 +207,15 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
           max={5}
           step={0.1}
           onChange={handleBarHeightSlider}
-          draggableTrack={true}
+        />
+        Volume
+        <Slider
+          className="items-left slider-style"
+          defaultValue={volume}
+          min={0}
+          max={1}
+          step={0.01}
+          onChange={handleVolumeSlider}
         />
       </div>
     </div>
