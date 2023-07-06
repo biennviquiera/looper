@@ -67,6 +67,7 @@ export default function Home () {
           />
         </div>
       }
+      <button></button>
       <button className="bg-orange-200 rounded-md px-4 py-2 mt-4" onClick={fileUploadHandler}>Upload</button>
     </div>
   )
