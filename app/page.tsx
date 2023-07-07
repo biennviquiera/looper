@@ -13,15 +13,24 @@ export default function Home () {
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileName, setFileName] = useState<string>('None')
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const [selectedRange, setSelectedRange] = useState<number[]>([0, 0])
 
   const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if ((event.target.files?.[0]) != null) {
+      const file = event.target.files[0]
+      const MAX_FILE_SIZE = 10 * 1024 * 1024
       event.preventDefault()
-      setSelectedFile(event.target.files[0])
-      setFileName(event.target.files[0].name)
-      setAudioFile(URL.createObjectURL(event.target.files[0]))
+      if (file.size > MAX_FILE_SIZE) {
+        setErrorMessage('Selected file is too large! Upload a file smaller than 10MB.')
+      } else {
+        setErrorMessage(null)
+        setSelectedFile(file)
+        setFileName(file.name)
+        setAudioFile(URL.createObjectURL(file))
+      }
     }
   }
 
@@ -33,6 +42,7 @@ export default function Home () {
     event.preventDefault()
     const formData = new FormData()
     if (selectedFile != null) {
+      // check file size
       formData.append('myFile', selectedFile, selectedFile.name)
       formData.append('startTime', selectedRange[0].toString())
       // offset used for delay in loop
@@ -53,10 +63,18 @@ export default function Home () {
     selectedRangeRef.current = selectedRange
   }, [selectedRange])
 
+  const handleClick = () => {
+    if (fileInputRef != null) {
+      fileInputRef.current?.click()
+    }
+  }
+
   return (
     <div className="flex flex-col items-center justify-center pb-8 overflow-x-auto">
       <h1 className="font-bold p-8 text-4xl text-center bg-blue-200 m-8">MP3 Looper</h1>
-      <input className="flex-1" type="file" accept=".mp3" onChange={fileSelectedHandler} />
+      <input hidden className="flex-1" ref={fileInputRef} type="file" accept="audio/*" onChange={fileSelectedHandler} />
+      <button className="bg-neutral-400 px-8 rounded-md" onClick={handleClick}>Select File</button>
+      {(errorMessage != null) && <p style={{ color: 'red' }}>{errorMessage}</p>}
       {audioFile != null &&
         <div className="center-screen w-full" style={{ whiteSpace: 'nowrap' }}>
           <Player
