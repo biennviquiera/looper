@@ -56,7 +56,7 @@ export default function Home () {
   return (
     <div className="flex flex-col items-center justify-center pb-8 overflow-x-auto">
       <h1 className="font-bold p-8 text-4xl text-center bg-blue-200 m-8">MP3 Looper</h1>
-      <input className="flex-1" type="file" accept=".mp3" onChange={fileSelectedHandler} />
+      <input className="flex-1" type="file" accept="audio/*" onChange={fileSelectedHandler} />
       {audioFile != null &&
         <div className="center-screen w-full" style={{ whiteSpace: 'nowrap' }}>
           <Player
