@@ -6,14 +6,21 @@ import ffmpeg from 'fluent-ffmpeg'
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import fs, { createReadStream } from 'fs'
+import rateLimit from 'express-rate-limit'
 import 'dotenv/config'
 ffmpeg.setFfmpegPath(ffmpegInstaller.path)
+
+// Rate Limit settings
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 min
+  max: 50,
+  message: 'Too many requests. Try again later.'
+})
 
 // Create S3 service object
 const s3Client = new S3Client({ region: process.env.region })
 
 const app = express()
-// eslint-disable-next-line no-unused-vars
 
 app.use(cors())
 
@@ -59,7 +66,7 @@ const loopFile = (outputPath, loopedPath) => {
   })
 }
 
-app.post('/api/loop', upload.single('myFile'), (req, res) => {
+app.post('/api/loop', limiter, upload.single('myFile'), (req, res) => {
   // console.log(req.body) // form fields
   // console.log(req.file) // form file
 
