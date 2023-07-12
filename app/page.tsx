@@ -17,6 +17,7 @@ export default function Home () {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const [selectedRange, setSelectedRange] = useState<number[]>([0, 0])
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
 
   const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if ((event.target.files?.[0]) != null) {
@@ -42,18 +43,22 @@ export default function Home () {
     event.preventDefault()
     const formData = new FormData()
     if (selectedFile != null) {
-      // check file size
       formData.append('myFile', selectedFile, selectedFile.name)
       formData.append('startTime', selectedRange[0].toString())
       // offset used for delay in loop
       const offset = 0.08
       formData.append('endTime', (selectedRange[1] + offset).toString())
-      console.log(...formData)
       // Used for sending to loop
       const res = fetch('http://localhost:3001/api/loop', {
         method: 'POST',
         body: formData
-      })
+      }).then(async response => await response.json())
+        .then(data => {
+          console.log('ouptut is', data.downloadUrl)
+          setDownloadUrl(data.downloadUrl)
+        }).catch(err => {
+          console.error('An error occurred', err)
+        })
     }
   }
 
@@ -85,8 +90,12 @@ export default function Home () {
           />
         </div>
       }
-      <button></button>
       <button className="bg-orange-200 rounded-md px-4 py-2 mt-4" onClick={fileUploadHandler}>Upload</button>
+      {downloadUrl != null &&
+      <div className="bg-neutral-200 rounded-md p-4 m-4 hover:bg-neutral-400">
+        <a href={downloadUrl} target="_blank" rel="noopener noreferrer">Download looped file</a>
+      </div>
+      }
     </div>
   )
 }

@@ -3,13 +3,17 @@ import multer from 'multer'
 import cors from 'cors'
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg'
 import ffmpeg from 'fluent-ffmpeg'
-import AWS from 'aws-sdk'
-
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import fs, { createReadStream } from 'fs'
+import 'dotenv/config'
 ffmpeg.setFfmpegPath(ffmpegInstaller.path)
+
+// Create S3 service object
+const s3Client = new S3Client({ region: process.env.region })
 
 const app = express()
 // eslint-disable-next-line no-unused-vars
-const s3 = new AWS.S3()
 
 app.use(cors())
 
@@ -63,11 +67,8 @@ app.post('/api/loop', upload.single('myFile'), (req, res) => {
   const startTime = req.body.startTime
   const endTime = req.body.endTime
 
-  console.log('Output: ' + startTime + endTime)
-
   const outputPath = 'uploads/trimmed_' + currentFile.filename
   const loopedPath = 'uploads/looped_' + currentFile.filename
-
   processFile(currentFile, outputPath, startTime, endTime)
     .then(() => {
       console.log('File trimming finished')
@@ -75,7 +76,36 @@ app.post('/api/loop', upload.single('myFile'), (req, res) => {
     })
     .then(() => {
       console.log('File looping finished')
-      res.status(200).send('File successfully looped!')
+      const params = {
+        Bucket: process.env.BUCKET,
+        Key: loopedPath.split('/').pop(),
+        Body: createReadStream(loopedPath)
+      }
+      return s3Client.send(new PutObjectCommand(params))
+    }).then(async (output) => {
+      console.log('File uploaded to S3:', output)
+      // Clean up intermediary files
+      fs.unlink(currentFile.path, err => {
+        if (err) console.error('Error deleting original file:', err)
+        else console.log('Original file deleted')
+      })
+      fs.unlink(outputPath, err => {
+        if (err) console.error('Error deleting trimmed file:', err)
+        else console.log('Trimmed file deleted')
+      })
+      fs.unlink(loopedPath, err => {
+        if (err) console.error('Error deleting trimmed file:', err)
+        else console.log('Local looped file deleted')
+      })
+
+      // Create download link
+      const downloadParams = {
+        Bucket: process.env.BUCKET,
+        Key: loopedPath.split('/').pop(),
+        Expires: 60 * 5
+      }
+      const url = await getSignedUrl(s3Client, new GetObjectCommand(downloadParams))
+      res.status(200).json({ message: 'File uploaded successfully', downloadUrl: url })
     })
     .catch((err) => {
       console.error(err)

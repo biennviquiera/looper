@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/s3-request-presigner": "^3.369.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@types/node": "20.3.1",
     "@types/react": "18.2.12",
@@ -30,7 +31,8 @@
     "rc-slider": "^10.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwindcss": "3.3.2"
+    "tailwindcss": "3.3.2",
+    "wavesurfer.js": "^7.0.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.60.0",
