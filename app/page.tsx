@@ -7,6 +7,7 @@ import Layout from './layout'
 import React, { useEffect, useState, useRef } from 'react'
 import './globals.css'
 import Player from './components/WaveSurferPlayer'
+import { CircularProgress } from '@mui/material'
 
 export default function Home () {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
@@ -18,9 +19,11 @@ export default function Home () {
 
   const [selectedRange, setSelectedRange] = useState<number[]>([0, 0])
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if ((event.target.files?.[0]) != null) {
+      setDownloadUrl(null)
       const file = event.target.files[0]
       const MAX_FILE_SIZE = 10 * 1024 * 1024
       event.preventDefault()
@@ -43,6 +46,7 @@ export default function Home () {
     event.preventDefault()
     const formData = new FormData()
     if (selectedFile != null) {
+      setIsLoading(true)
       formData.append('myFile', selectedFile, selectedFile.name)
       formData.append('startTime', selectedRange[0].toString())
       // offset used for delay in loop
@@ -50,7 +54,7 @@ export default function Home () {
       formData.append('endTime', (selectedRange[1] + offset).toString())
       // Used for sending to loop
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      const loopEndPoint = `${process.env.NEXT_PUBLIC_EC2_IP_ADDRESS}/api/loop`
+      const loopEndPoint = `http://${process.env.NEXT_PUBLIC_EC2_IP_ADDRESS}/api/loop`
       console.log(loopEndPoint)
       fetch(loopEndPoint, {
         method: 'POST',
@@ -67,6 +71,7 @@ export default function Home () {
           const data = await response.json()
           console.log('output is', data.downloadUrl)
           setDownloadUrl(data.downloadUrl)
+          setIsLoading(false)
         }
       }).catch(err => {
         console.error('A network error occurred', err)
@@ -102,7 +107,15 @@ export default function Home () {
           />
         </div>
       }
-      <button className="bg-orange-200 rounded-md px-4 py-2 mt-4" onClick={fileUploadHandler}>Upload</button>
+      <button
+        className="bg-orange-200 rounded-md px-4 py-2 mt-4"
+        onClick={fileUploadHandler}
+        disabled={isLoading}
+        >
+          Loop!
+      </button>
+      {isLoading && <CircularProgress className="m-4" />}
+      {isLoading ? 'Looping in progress. please wait...' : ''}
       {downloadUrl != null &&
       <div className="bg-neutral-200 rounded-md p-4 m-4 hover:bg-neutral-400">
         <a href={downloadUrl} target="_blank" rel="noopener noreferrer">Download looped file</a>
