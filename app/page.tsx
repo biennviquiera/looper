@@ -49,16 +49,25 @@ export default function Home () {
       const offset = 0.08
       formData.append('endTime', (selectedRange[1] + offset).toString())
       // Used for sending to loop
-      const res = fetch('http://localhost:3001/api/loop', {
+      fetch('http://localhost:3001/api/loop', {
         method: 'POST',
         body: formData
-      }).then(async response => await response.json())
-        .then(data => {
-          console.log('ouptut is', data.downloadUrl)
+      }).then(async response => {
+        if (!response.ok) {
+          const data = await response.json()
+          if (response.status === 429) { // status code for rate limit
+            setErrorMessage('You have reached the upload limit. Try again in 15 minutes.')
+          } else {
+            console.error('An error occurred', data)
+          }
+        } else {
+          const data = await response.json()
+          console.log('output is', data.downloadUrl)
           setDownloadUrl(data.downloadUrl)
-        }).catch(err => {
-          console.error('An error occurred', err)
-        })
+        }
+      }).catch(err => {
+        console.error('A network error occurred', err)
+      })
     }
   }
 

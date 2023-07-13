@@ -14,7 +14,7 @@ ffmpeg.setFfmpegPath(ffmpegInstaller.path)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 min
   max: 50,
-  message: 'Too many requests. Try again later.'
+  message: JSON.stringify({ message: 'Too many requests. Try again later.' })
 })
 
 // Create S3 service object
