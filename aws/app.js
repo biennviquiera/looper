@@ -26,7 +26,7 @@ const s3Client = new S3Client({ region: process.env.region })
 const app = express()
 
 const key = fs.readFileSync(__dirname + '/ssl.key', 'utf-8')
-const cert = fs.readFileSync(__dirname + '/ssl.cert', 'utf-8')
+const cert = fs.readFileSync(__dirname + '/ssl.crt', 'utf-8')
 
 const parameters = {
   key,
