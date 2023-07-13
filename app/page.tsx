@@ -54,7 +54,7 @@ export default function Home () {
       formData.append('endTime', (selectedRange[1] + offset).toString())
       // Used for sending to loop
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      const loopEndPoint = `http://${process.env.NEXT_PUBLIC_EC2_IP_ADDRESS}/api/loop`
+      const loopEndPoint = `https://${process.env.NEXT_PUBLIC_EC2_IP_ADDRESS}/api/loop`
       console.log(loopEndPoint)
       fetch(loopEndPoint, {
         method: 'POST',
