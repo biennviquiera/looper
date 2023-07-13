@@ -7,6 +7,7 @@ import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import fs, { createReadStream } from 'fs'
 import rateLimit from 'express-rate-limit'
+import https from 'https'
 import 'dotenv/config'
 ffmpeg.setFfmpegPath(ffmpegInstaller.path)
 
@@ -22,6 +23,14 @@ const s3Client = new S3Client({ region: process.env.region })
 
 const app = express()
 
+const key = fs.readFileSync(__dirname + 'ssl.key', 'utf-8')
+const cert = fs.readFileSync(__dirname + 'ssl.cert', 'utf-8')
+
+const parameters = {
+  key,
+  cert
+}
+
 app.use(cors())
 
 const storage = multer.diskStorage({
@@ -36,9 +45,10 @@ const storage = multer.diskStorage({
 const maxSize = 10 * 1024 * 1024
 
 const upload = multer({ storage, limits: { fileSize: maxSize } })
-
 const port = process.env.PORT || 3001
-app.listen(port, () => {
+
+const server = https.createServer(parameters, app)
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`)
 })
 
@@ -67,7 +77,7 @@ const loopFile = (outputPath, loopedPath) => {
   })
 }
 
-app.post('/api/loop', limiter, upload.single('myFile'), (req, res) => {
+server.post('/api/loop', limiter, upload.single('myFile'), (req, res) => {
   // console.log(req.body) // form fields
   // console.log(req.file) // form file
 
