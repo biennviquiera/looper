@@ -33,8 +33,9 @@ const storage = multer.diskStorage({
     callback(null, file.originalname)
   }
 })
+const maxSize = 10 * 1024 * 1024
 
-const upload = multer({ storage })
+const upload = multer({ storage, limits: { fileSize: maxSize } })
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {
