@@ -79,7 +79,7 @@ const loopFile = (outputPath, loopedPath) => {
   })
 }
 
-server.post('/api/loop', limiter, upload.single('myFile'), (req, res) => {
+app.post('/api/loop', limiter, upload.single('myFile'), (req, res) => {
   // console.log(req.body) // form fields
   // console.log(req.file) // form file
 
