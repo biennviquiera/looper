@@ -91,7 +91,7 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
   useEffect(() => {
     if (wavesurferReady && wavesurfer != null) {
       // eslint-disable-next-line
-      wavesurfer.un('timeupdate')
+      wavesurfer.un('timeupdate', () => {})
 
       wavesurfer.on('timeupdate', (currentTime) => {
         if (activeRegion != null && wavesurfer.isPlaying() && currentTime >= activeRegion.end) {
