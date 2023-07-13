@@ -9,6 +9,8 @@ import fs, { createReadStream } from 'fs'
 import rateLimit from 'express-rate-limit'
 import https from 'https'
 import 'dotenv/config'
+import path from 'path'
+const __dirname = path.resolve()
 ffmpeg.setFfmpegPath(ffmpegInstaller.path)
 
 // Rate Limit settings
