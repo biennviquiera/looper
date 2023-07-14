@@ -1,8 +1,15 @@
+## Foreword 
+This project is inspired by a video I uploaded on Jan 11, 2021: [Migos ft. Young Thug - YRN EZRA Remix Loop](https://www.youtube.com/watch?v=BZd1rEcXR6o)
+The video gained over 800,000 views and I wanted to give users the ability to make their own loops.
+
+
+## Demo
+https://github.com/biennviquiera/looper/assets/66394477/0530f871-9f7f-49e9-bb51-20d2491f63a8
+
 ## Getting Started
+This program can be accessed on the web with this [link](https://looper.bienn.dev/)
 
-1. First, run the development server:
-2. You can run this version on your local machine. Make sure you have node.js installed  and run the express server using `node app.js` inside the app directory.
-3. Start the next.js webpage in another terminal using `npm run dev`
-4. In your browser, navigate to localhost:3000 (by default)
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## TODO:
+- Fine-tune delay and difference between browser audio and output file
+- Enhance UI
+- Add duration options
