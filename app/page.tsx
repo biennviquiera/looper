@@ -46,6 +46,7 @@ export default function Home () {
     event.preventDefault()
     const formData = new FormData()
     if (selectedFile != null) {
+      setDownloadUrl(null)
       setIsLoading(true)
       formData.append('myFile', selectedFile, selectedFile.name)
       formData.append('startTime', selectedRange[0].toString())
