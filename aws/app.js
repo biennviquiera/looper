@@ -9,8 +9,6 @@ import fs, { createReadStream } from 'fs'
 import rateLimit from 'express-rate-limit'
 import https from 'https'
 import 'dotenv/config'
-import path from 'path'
-const __dirname = path.resolve()
 ffmpeg.setFfmpegPath(ffmpegInstaller.path)
 
 // Rate Limit settings
@@ -25,8 +23,8 @@ const s3Client = new S3Client({ region: process.env.region })
 
 const app = express()
 
-const key = fs.readFileSync(__dirname + '/ssl.key', 'utf-8')
-const cert = fs.readFileSync(__dirname + '/ssl.crt', 'utf-8')
+const key = fs.readFileSync('/etc/letsencrypt/live/looperapi.bienn.dev/fullchain.pem', 'utf-8')
+const cert = fs.readFileSync('/etc/letsencrypt/live/looperapi.bienn.dev/privkey.pem', 'utf-8')
 
 const parameters = {
   key,
