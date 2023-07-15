@@ -23,8 +23,8 @@ const s3Client = new S3Client({ region: process.env.region })
 
 const app = express()
 
-const key = fs.readFileSync('/etc/letsencrypt/live/looperapi.bienn.dev/fullchain.pem', 'utf-8')
-const cert = fs.readFileSync('/etc/letsencrypt/live/looperapi.bienn.dev/privkey.pem', 'utf-8')
+const key = fs.readFileSync('./privkey.pem', 'utf-8')
+const cert = fs.readFileSync('./cert.pem', 'utf-8')
 
 const parameters = {
   key,

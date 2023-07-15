@@ -120,7 +120,7 @@ export default function Home () {
         <a href={downloadUrl} target="_blank" rel="noopener noreferrer">Download looped file</a>
       </div>
       }
-      <p className="4xl" style={{ color: 'red' }}>Currently not functional. Waiting for SSL certification :(</p>
+      <p className="2xl">Note: processing may take a while due to server performance</p>
     </div>
   )
 }
