@@ -94,7 +94,7 @@ const Player: React.FC<PlayerProps> = ({ audioLink, title, onRegionUpdated }) =>
       wavesurfer.un('timeupdate', () => {})
 
       wavesurfer.on('timeupdate', (currentTime) => {
-        if (activeRegion != null && wavesurfer.isPlaying() && currentTime >= activeRegion.end - 0.24) {
+        if (activeRegion != null && wavesurfer.isPlaying() && currentTime >= activeRegion.end - 0.05) {
           wavesurfer.seekTo(activeRegion.start / wavesurfer.getDuration())
         }
       })
