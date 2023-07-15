@@ -92,7 +92,7 @@ export default function Home () {
 
   return (
     <div className="flex flex-col items-center justify-center pb-8 overflow-x-auto">
-      <h1 className="font-bold p-8 text-4xl text-center bg-blue-200 m-8">MP3 Looper</h1>
+      <h1 className="font-bold p-8 text-4xl text-center bg-blue-200 m-8">Audio Looper</h1>
       <input hidden className="flex-1" ref={fileInputRef} type="file" accept="audio/*" onChange={fileSelectedHandler} />
       <button className="bg-neutral-400 px-8 rounded-md" onClick={handleClick}>Select File</button>
       {(errorMessage != null) && <p style={{ color: 'red' }}>{errorMessage}</p>}
