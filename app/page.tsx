@@ -25,7 +25,7 @@ export default function Home () {
     if ((event.target.files?.[0]) != null) {
       setDownloadUrl(null)
       const file = event.target.files[0]
-      const MAX_FILE_SIZE = 10 * 1024 * 1024
+      const MAX_FILE_SIZE = 20 * 1024 * 1024
       event.preventDefault()
       if (file.size > MAX_FILE_SIZE) {
         setErrorMessage('Selected file is too large! Upload a file smaller than 10MB.')
