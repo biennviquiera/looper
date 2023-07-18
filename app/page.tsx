@@ -28,7 +28,7 @@ export default function Home () {
       const MAX_FILE_SIZE = 20 * 1024 * 1024
       event.preventDefault()
       if (file.size > MAX_FILE_SIZE) {
-        setErrorMessage('Selected file is too large! Upload a file smaller than 10MB.')
+        setErrorMessage('Selected file is too large! Upload a file smaller than 20MB.')
       } else {
         setErrorMessage(null)
         setSelectedFile(file)

@@ -42,7 +42,7 @@ const storage = multer.diskStorage({
     callback(null, file.originalname)
   }
 })
-const maxSize = 10 * 1024 * 1024
+const maxSize = 20 * 1024 * 1024
 
 const upload = multer({ storage, limits: { fileSize: maxSize } })
 const port = process.env.PORT || 3001
@@ -78,8 +78,8 @@ const loopFile = (outputPath, loopedPath) => {
 }
 
 app.post('/api/loop', limiter, upload.single('myFile'), (req, res) => {
-  // console.log(req.body) // form fields
-  // console.log(req.file) // form file
+  console.log(req.body) // form fields
+  console.log(req.file) // form file
 
   const currentFile = req.file
   const startTime = req.body.startTime
