@@ -64,12 +64,12 @@ const processFile = (currentFile, outputPath, startTime, endTime) => {
   })
 }
 
-const loopFile = (outputPath, loopedPath) => {
+const loopFile = (outputPath, loopedPath, duration) => {
   return new Promise((resolve, reject) => {
     ffmpeg()
       .input(outputPath)
       .inputOptions('-stream_loop -1')
-      .outputOptions('-t 60')
+      .outputOptions('-t ' + duration)
       .output(loopedPath)
       .on('end', resolve)
       .on('error', reject)
@@ -84,13 +84,14 @@ app.post('/api/loop', limiter, upload.single('myFile'), (req, res) => {
   const currentFile = req.file
   const startTime = req.body.startTime
   const endTime = req.body.endTime
+  const loopDuration = req.body.duration
 
   const outputPath = 'uploads/trimmed_' + currentFile.filename
   const loopedPath = 'uploads/looped_' + currentFile.filename
   processFile(currentFile, outputPath, startTime, endTime)
     .then(() => {
       console.log('File trimming finished')
-      return loopFile(outputPath, loopedPath)
+      return loopFile(outputPath, loopedPath, loopDuration)
     })
     .then(() => {
       console.log('File looping finished')
