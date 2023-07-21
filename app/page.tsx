@@ -124,7 +124,7 @@ export default function Home () {
           <input
             className="mx-2"
             type="radio"
-            value="1"
+            value="60"
             checked={selectedLoopDuration === '60'}
             onChange={handleSelectedDurationChange}
           />
@@ -134,7 +134,7 @@ export default function Home () {
           <input
             className="mx-2"
             type="radio"
-            value="5"
+            value="300"
             checked={selectedLoopDuration === '300'}
             onChange={handleSelectedDurationChange}
           />
@@ -144,7 +144,7 @@ export default function Home () {
           <input
             className="mx-2"
             type="radio"
-            value="10"
+            value="600"
             checked={selectedLoopDuration === '600'}
             onChange={handleSelectedDurationChange}
           />
