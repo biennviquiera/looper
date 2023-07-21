@@ -11,7 +11,7 @@ import { CircularProgress } from '@mui/material'
 
 type Duration = '1' | '5' | '10'
 
-export default function Home() {
+export default function Home () {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -52,10 +52,14 @@ export default function Home() {
     if (selectedFile != null) {
       setDownloadUrl(null)
       setIsLoading(true)
+
       formData.append('myFile', selectedFile, selectedFile.name)
       formData.append('startTime', selectedRange[0].toString())
       // offset used for delay in loop=
       formData.append('endTime', (selectedRange[1]).toString())
+      formData.append('duration', selectedLoopDuration.toString())
+      console.log(selectedLoopDuration)
+
       // Used for sending to loop
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       const loopEndPoint = `https://${process.env.NEXT_PUBLIC_EC2_IP_ADDRESS}/api/loop`
@@ -161,7 +165,8 @@ export default function Home() {
           <a href={downloadUrl} target="_blank" rel="noopener noreferrer">Download looped file</a>
         </div>
       }
-      <p className="2xl">Note: processing may take a while due to server performance</p>
+      <p className="2xl items-center">Note: processing may take a while due to server performance.</p>
+      <p>Typically takes 25% of the selected duration to process</p>
     </div>
   )
 }

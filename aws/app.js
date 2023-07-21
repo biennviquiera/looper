@@ -85,6 +85,7 @@ app.post('/api/loop', limiter, upload.single('myFile'), (req, res) => {
   const startTime = req.body.startTime
   const endTime = req.body.endTime
   const loopDuration = req.body.duration
+  console.log(loopDuration)
 
   const outputPath = 'uploads/trimmed_' + currentFile.filename
   const loopedPath = 'uploads/looped_' + currentFile.filename
