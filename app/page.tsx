@@ -9,7 +9,7 @@ import './globals.css'
 import Player from './components/WaveSurferPlayer'
 import { CircularProgress } from '@mui/material'
 
-type Duration = '1' | '5' | '10'
+type Duration = '60' | '300' | '600'
 
 export default function Home () {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
@@ -23,7 +23,7 @@ export default function Home () {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const [selectedLoopDuration, setSelectedLoopDuration] = useState<Duration>('1')
+  const [selectedLoopDuration, setSelectedLoopDuration] = useState<Duration>('60')
 
   const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if ((event.target.files?.[0]) != null) {
@@ -125,7 +125,7 @@ export default function Home () {
             className="mx-2"
             type="radio"
             value="1"
-            checked={selectedLoopDuration === '1'}
+            checked={selectedLoopDuration === '60'}
             onChange={handleSelectedDurationChange}
           />
           1 minute
@@ -135,7 +135,7 @@ export default function Home () {
             className="mx-2"
             type="radio"
             value="5"
-            checked={selectedLoopDuration === '5'}
+            checked={selectedLoopDuration === '300'}
             onChange={handleSelectedDurationChange}
           />
           5 minutes
@@ -145,7 +145,7 @@ export default function Home () {
             className="mx-2"
             type="radio"
             value="10"
-            checked={selectedLoopDuration === '10'}
+            checked={selectedLoopDuration === '600'}
             onChange={handleSelectedDurationChange}
           />
           10 minutes
