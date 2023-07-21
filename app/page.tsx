@@ -123,6 +123,7 @@ export default function Home () {
         <label>
           <input
             className="mx-2"
+            name="duration"
             type="radio"
             value="60"
             checked={selectedLoopDuration === '60'}
@@ -133,6 +134,7 @@ export default function Home () {
         <label>
           <input
             className="mx-2"
+            name="duration"
             type="radio"
             value="300"
             checked={selectedLoopDuration === '300'}
@@ -143,6 +145,7 @@ export default function Home () {
         <label>
           <input
             className="mx-2"
+            name="duration"
             type="radio"
             value="600"
             checked={selectedLoopDuration === '600'}
