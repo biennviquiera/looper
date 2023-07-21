@@ -9,7 +9,9 @@ import './globals.css'
 import Player from './components/WaveSurferPlayer'
 import { CircularProgress } from '@mui/material'
 
-export default function Home () {
+type Duration = '1' | '5' | '10'
+
+export default function Home() {
   const [audioFile, setAudioFile] = useState<string | undefined>(undefined)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -20,6 +22,8 @@ export default function Home () {
   const [selectedRange, setSelectedRange] = useState<number[]>([0, 0])
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const [selectedLoopDuration, setSelectedLoopDuration] = useState<Duration>('1')
 
   const fileSelectedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if ((event.target.files?.[0]) != null) {
@@ -79,6 +83,10 @@ export default function Home () {
     }
   }
 
+  const handleSelectedDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedLoopDuration(event.target.value as Duration)
+  }
+
   // ref for keeping track of current range
   const selectedRangeRef = useRef(selectedRange)
   useEffect(() => {
@@ -107,19 +115,51 @@ export default function Home () {
           />
         </div>
       }
+      <div className="flex gap-4 m-2" >
+        <label>
+          <input
+            className="mx-2"
+            type="radio"
+            value="1"
+            checked={selectedLoopDuration === '1'}
+            onChange={handleSelectedDurationChange}
+          />
+          1 minute
+        </label>
+        <label>
+          <input
+            className="mx-2"
+            type="radio"
+            value="5"
+            checked={selectedLoopDuration === '5'}
+            onChange={handleSelectedDurationChange}
+          />
+          5 minutes
+        </label>
+        <label>
+          <input
+            className="mx-2"
+            type="radio"
+            value="10"
+            checked={selectedLoopDuration === '10'}
+            onChange={handleSelectedDurationChange}
+          />
+          10 minutes
+        </label>
+      </div>
       <button
         className="bg-orange-200 rounded-md px-4 py-2 mt-4"
         onClick={fileUploadHandler}
         disabled={isLoading}
-        >
-          Loop!
+      >
+        Loop!
       </button>
       {isLoading && <CircularProgress className="m-4" />}
       {isLoading ? 'Looping in progress. please wait...' : ''}
       {downloadUrl != null &&
-      <div className="bg-neutral-200 rounded-md p-4 m-4 hover:bg-neutral-400">
-        <a href={downloadUrl} target="_blank" rel="noopener noreferrer">Download looped file</a>
-      </div>
+        <div className="bg-neutral-200 rounded-md p-4 m-4 hover:bg-neutral-400">
+          <a href={downloadUrl} target="_blank" rel="noopener noreferrer">Download looped file</a>
+        </div>
       }
       <p className="2xl">Note: processing may take a while due to server performance</p>
     </div>
