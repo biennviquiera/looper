@@ -54,7 +54,7 @@ export default function Home () {
       setIsLoading(true)
 
       formData.append('myFile', selectedFile, selectedFile.name)
-      const startOffset = 0.03
+      const startOffset = -0.03
       formData.append('startTime', (selectedRange[0] + startOffset).toString())
       formData.append('endTime', (selectedRange[1]).toString())
       formData.append('duration', selectedLoopDuration.toString())
