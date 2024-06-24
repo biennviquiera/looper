@@ -170,6 +170,7 @@ export default function Home () {
       }
       <p className="2xl items-center">Note: processing may take a while due to server performance.</p>
       <p>Typically takes 25% of the selected duration to process</p>
+      <p>Currently defunct due to AWS costs. Be back soon</p>
     </div>
   )
 }
